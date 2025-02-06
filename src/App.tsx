@@ -3,19 +3,19 @@ import { AuthProvider } from './context/AuthContext';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Register from './pages/Register'; // Import Register
 import ProtectedRoute from './components/ProtectedRoute';
-import ThemeToggle from './components/ThemeToggle'; // Import ThemeToggle
+import AdminLayout from './layouts/AdminLayout';
+import Dashboard from './pages/admin/Dashboard';
 
 function App() {
   return (
     <AuthProvider>
-      <div className="dark:bg-gray-900 dark:text-white min-h-screen"> {/* Add a dark mode background and text color */}
+      <div className="dark:bg-gray-900 dark:text-white min-h-screen">
         <BrowserRouter>
-          <div className="p-4 flex justify-end">
-            <ThemeToggle /> {/* Place ThemeToggle at the top */}
-          </div>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} /> {/* Add Register Route */}
             <Route
               path="/"
               element={
@@ -24,6 +24,11 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            {/* Admin Routes */}
+            <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
+              <Route path="dashboard" element={<Dashboard />} />
+              {/* Add other admin routes here (invoices, learners, courses, etc.) */}
+            </Route>
           </Routes>
         </BrowserRouter>
       </div>
