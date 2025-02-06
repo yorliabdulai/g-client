@@ -7,6 +7,7 @@ import Register from './pages/Register'; // Import Register
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminLayout from './layouts/AdminLayout';
 import Dashboard from './pages/admin/Dashboard';
+import OTPVerification from './pages/OTPVerification';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} /> {/* Add Register Route */}
+            <Route path="/otp-verification" element={<OTPVerification />} />
             <Route
               path="/"
               element={
