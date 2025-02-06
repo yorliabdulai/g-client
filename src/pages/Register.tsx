@@ -1,5 +1,6 @@
-// src/pages/Register.tsx
 import React from 'react';
+import { useState } from 'react';
+import { apiService } from '../apiService';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -7,16 +8,34 @@ import {
   UserIcon,
   EnvelopeIcon as MailIcon,
   LockClosedIcon,
-} from '@heroicons/react/24/solid'; // Use smaller heroicons size (24)
+} from '@heroicons/react/24/solid'; 
 
 const Register: React.FC = () => {
-  const navigate = useNavigate(); // useNavigate for navigation
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Add form submission logic here
-    navigate('/login'); // Navigate to login after successful registration
-  };
+    const navigate = useNavigate();
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+  
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      setErrorMessage('');
+  
+      try {
+        const payload = {
+          name: `${firstName} ${lastName}`,
+          email: email,
+          password: password,
+        };
+  
+        await apiService.admin.signup(payload);
+        navigate('/login'); // Redirect to login after successful registration
+      } catch (error: Error | unknown) {
+        const message = error instanceof Error ? error.message : 'Registration failed';
+        setErrorMessage(message); // Display any error message
+      }
+    };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
@@ -64,6 +83,8 @@ const Register: React.FC = () => {
                 <Input
                   type="text"
                   placeholder="FirstName"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
                   className="border border-gray-300 rounded-md py-2 pl-10 pr-3 w-full focus:outline-none focus:ring-2 focus:ring-light-blue text-sm bg-light-gray"
                 />
               </div>
@@ -76,6 +97,7 @@ const Register: React.FC = () => {
                 <Input
                   type="text"
                   placeholder="LastName"
+                  onChange={(e) => setLastName(e.target.value)}
                   className="border border-gray-300 rounded-md py-2 pl-10 pr-3 w-full focus:outline-none focus:ring-2 focus:ring-light-blue text-sm bg-light-gray"
                 />
               </div>
@@ -89,6 +111,7 @@ const Register: React.FC = () => {
               <Input
                 type="email"
                 placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
                 className="border border-gray-300 rounded-md py-2 pl-10 pr-3 w-full focus:outline-none focus:ring-2 focus:ring-light-blue text-sm bg-light-gray"
               />
             </div>
@@ -102,6 +125,7 @@ const Register: React.FC = () => {
                 <Input
                   type="password"
                   placeholder="Password"
+                  onChange={(e) => setPassword(e.target.value)}
                   className="border border-gray-300 rounded-md py-2 pl-10 pr-3 w-full focus:outline-none focus:ring-2 focus:ring-light-blue text-sm bg-light-gray"
                 />
               </div>
@@ -120,17 +144,22 @@ const Register: React.FC = () => {
             </div>
 
             {/* Hint copy (Contact) */}
+            {/* Contact Input */}
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <UserIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
               </div>
               <Input
                 type="text"
-                placeholder="contact"
+                placeholder="Contact"
                 className="border border-gray-300 rounded-md py-2 pl-10 pr-3 w-full focus:outline-none focus:ring-2 focus:ring-light-blue text-sm bg-light-gray"
               />
               
             </div>
+            {/* Error Message */}
+            {errorMessage && (
+              <div className="text-red-500 text-sm">{errorMessage}</div>
+            )}
 
             {/* Create Accounts Button */}
             <div>
