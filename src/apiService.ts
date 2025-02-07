@@ -10,16 +10,18 @@ async function handleResponse(response: Response) {
   return data;
 }
 
-interface AdminSignupPayload {
-  email: string;
-  password: string;
-  name: string;
-}
-
 interface AdminLoginPayload {
   email: string;
   password: string;
 }
+interface AdminSignupPayload {
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  contact: string;
+}
+
 
 export const apiService = {
   admin: {

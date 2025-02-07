@@ -16,6 +16,7 @@ const Register: React.FC = () => {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [contact, setContact] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
   
     const handleSubmit = async (e: React.FormEvent) => {
@@ -24,13 +25,16 @@ const Register: React.FC = () => {
   
       try {
         const payload = {
-          name: `${firstName} ${lastName}`,
-          email: email,
-          password: password,
-        };
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            password: password,
+            contact: contact,
+          };
+          
   
         await apiService.admin.signup(payload);
-        navigate('/login'); // Redirect to login after successful registration
+        navigate('/otp-verification'); // Redirect to login after successful registration
       } catch (error: Error | unknown) {
         const message = error instanceof Error ? error.message : 'Registration failed';
         setErrorMessage(message); // Display any error message
@@ -152,6 +156,7 @@ const Register: React.FC = () => {
               <Input
                 type="text"
                 placeholder="Contact"
+                onChange={(e) => setContact(e.target.value)}
                 className="border border-gray-300 rounded-md py-2 pl-10 pr-3 w-full focus:outline-none focus:ring-2 focus:ring-light-blue text-sm bg-light-gray"
               />
               

@@ -3,17 +3,23 @@ import { Link } from 'react-router-dom';
 import Input from '../components/Input';
 import Button from '../components/Button';
 
-const OTPVerification: React.FC = () => {
+interface OTPVerificationProps {
+  payload: {
+    email: string;
+  };
+}
+
+const OTPVerification: React.FC<OTPVerificationProps> = ({ payload }) => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
       {/* Container */}
-      <div className="flex w-full max-w-5xl bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="flex w-full max-w-3xl bg-white rounded-lg shadow-md overflow-hidden">
         {/* Left Side (Background Image) */}
         <div className="w-1/2 hidden md:block relative">
           <img
             src="/images/otp_background.png" // Replace with your actual image path
             alt="OTP Verification Background"
-            className="h-full w-full object-cover absolute inset-0"
+            className="h-full w-auto object-contain absolute inset-0"
           />
         </div>
 
@@ -51,12 +57,12 @@ const OTPVerification: React.FC = () => {
               Simply enter the code we've sent to ensure your information stays safe and protected.
             </p>
             <p className="text-gray-text text-sm mt-2">
-              Enter the verification code we sent to your admindemo@gmail.com
+              Enter the verification code we sent to your {payload?.email}
             </p>
           </div>
 
           {/* OTP Form */}
-          <form className="space-y-4">
+          <form className="space-y-4" >
             <div>
               <Input
                 type="text"

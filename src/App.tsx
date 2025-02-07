@@ -17,7 +17,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} /> {/* Add Register Route */}
-            <Route path="/otp-verification" element={<OTPVerification />} />
+            <Route path="/otp-verification" element={<OTPVerification payload={{ email: '' }} />} />
             <Route
               path="/"
               element={
