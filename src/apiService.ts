@@ -164,8 +164,54 @@ export const apiService = {
           });
           return handleResponse(response);
         },
-      }
+      },
+    courses: {
+      createCourse: async (token: string, payload: { title: string; description: string; duration: string; price: number }) => {
+        const response = await fetch(`${BASE_URL}/courses`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        });
+        return handleResponse(response);
+      },
+      getCourses: async (token: string) => {
+        const response = await fetch(`${BASE_URL}/courses`, {
+          method: 'GET',
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        return handleResponse(response);
+      },
+      getCourseById: async (token: string, id: string) => {
+        const response = await fetch(`${BASE_URL}/courses/${id}`, {
+          method: 'GET',
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        return handleResponse(response);
+      },
+      updateCourseById: async (token: string, id: string, payload: { title: string; description: string; duration: string; price: number }) => {
+        const response = await fetch(`${BASE_URL}/courses/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        });
+        return handleResponse(response);
+      },
+      deleteCourseById: async (token: string, id: string) => {
+        const response = await fetch(`${BASE_URL}/courses/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        return handleResponse(response);
+      },
     },
+
+  },
   user: {
     signup: async (payload: { username: string; email: string; password: string }) => {
       const response = await fetch(`${BASE_URL}/user/auth/signup`, {
