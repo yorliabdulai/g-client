@@ -1,15 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { apiService } from '../apiService';
 import Input from '../components/Input';
 import Button from '../components/Button';
 
 interface OTPVerificationProps {
   payload: {
     email: string;
+    token: string;
   };
 }
-
 const OTPVerification: React.FC<OTPVerificationProps> = ({ payload }) => {
+  React.useEffect(() => {
+    const verifyEmail = async () => {
+      try {
+        const response = await apiService.admin.verifyEmail({email: payload.email, token: payload.token});
+        const { success } = await response.json();
+
+        if (success) {
+          // Navigate to the login page
+        } else {
+          console.error("Email verification failed");
+        }
+      } catch (error) {
+        console.error("An error occurred during email verification", error);
+      }
+    };
+    verifyEmail();
+  }, [payload]);
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
       {/* Container */}
