@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { apiService } from '../apiService';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -11,14 +11,16 @@ interface OTPVerificationProps {
   };
 }
 const OTPVerification: React.FC<OTPVerificationProps> = ({ payload }) => {
+  const navigate = useNavigate();
   React.useEffect(() => {
     const verifyEmail = async () => {
       try {
-        const response = await apiService.admin.verifyEmail({email: payload.email, token: payload.token});
+        const response = await apiService.admin.verifyEmail(payload);
         const { success } = await response.json();
 
         if (success) {
-          // Navigate to the login page
+          console.log('OTP response:', response);
+          navigate('/login');
         } else {
           console.error("Email verification failed");
         }
@@ -27,7 +29,7 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({ payload }) => {
       }
     };
     verifyEmail();
-  }, [payload]);
+  }, [payload, navigate]);
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
       {/* Container */}

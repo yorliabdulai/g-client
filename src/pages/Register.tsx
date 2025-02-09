@@ -34,10 +34,10 @@ const Register: React.FC = () => {
   
         const response = await apiService.admin.signup(payload);
         console.log('Registration response:', response);
-        navigate('/otp-verification'); // Redirect to login after successful registration
+        navigate('/otp-verification'); 
       } catch (error: Error | unknown) {
         const message = error instanceof Error ? error.message : 'Registration failed';
-        setErrorMessage(message); // Display any error message
+        setErrorMessage(message); 
       }
     };
 

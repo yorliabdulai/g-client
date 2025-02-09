@@ -54,11 +54,11 @@ export const apiService = {
       });
       return handleResponse(response);
     },
-    verifyEmail: async ({ email, token }: AdminVerifyEmailPayload) => {
+    verifyEmail: async (payload: AdminVerifyEmailPayload) => {
       const response = await fetch(`${BASE_URL}/admin/auth/verify-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, token }),
+        body: JSON.stringify(payload),
       });
       return handleResponse(response);
     },
@@ -97,6 +97,57 @@ export const apiService = {
       return handleResponse(response);
     }
   },
-  
-  // ... other APIs (user, learners, courses, etc.)
+  user: {
+    signup: async (payload: { username: string; email: string; password: string }) => {
+      const response = await fetch(`${BASE_URL}/user/auth/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      return handleResponse(response);
+    },
+    login: async (payload: { email: string; password: string }) => {
+      const response = await fetch(`${BASE_URL}/user/auth/signin`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      return handleResponse(response);
+    },
+    logout: async (token: string) => {
+      const response = await fetch(`${BASE_URL}/user/auth/logout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      return handleResponse(response);
+    },
+    verifyEmail: async (payload: { email: string; token: string }) => {
+      const response = await fetch(`${BASE_URL}/user/auth/verify-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      return handleResponse(response);
+    },
+    forgotPassword: async (payload: { email: string }) => {
+      const response = await fetch(`${BASE_URL}/user/auth/forgot-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      return handleResponse(response);
+    },
+    resetPassword: async (token: string, payload: { password: string }) => {
+      const response = await fetch(`${BASE_URL}/user/auth/reset-password/${token}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      return handleResponse(response);
+    },
+    } 
+    
 };
