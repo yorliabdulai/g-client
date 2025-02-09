@@ -31,7 +31,7 @@ export const apiService = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      return handleResponse(response);
+      return handleResponse(response)
     },
     login: async (payload: AdminLoginPayload) => {
       const response = await fetch(`${BASE_URL}/admin/auth/login`, {
@@ -51,6 +51,49 @@ export const apiService = {
       });
       return handleResponse(response);
     },
+  },
+  
+  verifyEmail: async (payload: { email: string; token: string }) => {
+    const response = await fetch(`${BASE_URL}/admin/auth/verify-email`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    return handleResponse(response);
+  },
+  forgotPassword: async (payload: { email: string }) => {
+    const response = await fetch(`${BASE_URL}/admin/auth/forgot-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    return handleResponse(response);
+  },
+  resetPassword: async (token: string, payload: { password: string }) => {
+    const response = await fetch(`${BASE_URL}/admin/auth/reset-password/${token}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    return handleResponse(response);
+  },
+  updateAdminDetails: async (token: string, payload: { first_name: string; last_name: string; email: string; contact: string }) => {
+    const response = await fetch(`${BASE_URL}/admin/auth/update`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+    return handleResponse(response);
+  },
+  checkAuth: async (token: string) => {
+    const response = await fetch(`${BASE_URL}/admin/auth/check-auth`, {
+      method: 'GET',
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    return handleResponse(response);
   },
   // ... other APIs (user, learners, courses, etc.)
 };

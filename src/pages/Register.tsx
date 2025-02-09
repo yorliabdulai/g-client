@@ -25,15 +25,15 @@ const Register: React.FC = () => {
   
       try {
         const payload = {
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            password: password,
-            contact: contact,
-          };
-          
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          password: password,
+          contact: contact,
+        };
   
-        await apiService.admin.signup(payload);
+        const response = await apiService.admin.signup(payload);
+        console.log('Registration response:', response);
         navigate('/otp-verification'); // Redirect to login after successful registration
       } catch (error: Error | unknown) {
         const message = error instanceof Error ? error.message : 'Registration failed';

@@ -19,13 +19,13 @@ const Login: React.FC = () => {
 
     try {
       const payload = {
-        email: email,
-        password: password,
+        email,
+        password,
       };
 
-      const data = await apiService.admin.login(payload);
-      // Store the JWT token in localStorage
-      localStorage.setItem('authToken', data.token);
+      const response = await apiService.admin.login(payload);
+      const { token } = await response.json();
+      localStorage.setItem('authToken', token);
       navigate('/admin/dashboard'); // Navigate to the dashboard
     } catch (error: Error | unknown) {
       const message = error instanceof Error ? error.message : 'Login failed';
