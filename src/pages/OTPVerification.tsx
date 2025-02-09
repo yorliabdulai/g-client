@@ -5,31 +5,39 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 
 interface OTPVerificationProps {
-  payload: {
-    email: string;
-    token: string;
-  };
+  email: string;
+  token: string;
 }
-const OTPVerification: React.FC<OTPVerificationProps> = ({ payload }) => {
+const OTPVerification: React.FC<OTPVerificationProps> = ({ email, token }) => {
   const navigate = useNavigate();
+  const [isExpired, setIsExpired] = React.useState(false);
+  const [error, setError] = React.useState('');
+
   React.useEffect(() => {
     const verifyEmail = async () => {
       try {
-        const response = await apiService.admin.verifyEmail(payload);
+        const startTime = Date.now();
+        const response = await apiService.admin.verifyEmail({ email, token });
         const { success } = await response.json();
 
+        const currentTime = Date.now();
+        const timeElapsed = currentTime - startTime;
         if (success) {
           console.log('OTP response:', response);
           navigate('/login');
+        } else if (timeElapsed > 5 * 60 * 1000) {
+          setIsExpired(true);
         } else {
-          console.error("Email verification failed");
+          setError("Email verification failed");
         }
       } catch (error) {
         console.error("An error occurred during email verification", error);
+        setIsExpired(true);
       }
     };
     verifyEmail();
-  }, [payload, navigate]);
+  }, [email, token, navigate]);
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
       {/* Container */}
@@ -45,7 +53,6 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({ payload }) => {
 
         {/* Right Side (OTP Form) */}
         <div className="w-full md:w-1/2 p-8 flex flex-col justify-center">
-
           {/* Back Button */}
           <div className="flex justify-start mb-6">
             <Link to="/register" className="text-light-blue text-sm">
@@ -77,7 +84,7 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({ payload }) => {
               Simply enter the code we've sent to ensure your information stays safe and protected.
             </p>
             <p className="text-gray-text text-sm mt-2">
-              Enter the verification code we sent to your {payload?.email}
+              Enter the verification code we sent to your {email}
             </p>
           </div>
 
@@ -100,12 +107,22 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({ payload }) => {
 
           {/* Footer */}
           <div className="mt-6 text-left">
-            <p className="text-gray-text text-sm">
-              Didn't you receive the OPT?{' '}
-              <a href="#" className="text-light-blue">
-                Resend OTP
-              </a>
-            </p>
+            {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+            {isExpired ? (
+              <p className="text-red-500 text-sm">
+                Sorry, the OTP has expired. Please{' '}
+                <a href="#" className="text-light-blue">
+                  Resend OTP
+                </a>
+              </p>
+            ) : (
+              <p className="text-gray-text text-sm">
+                Didn't you receive the OPT?{' '}
+                <a href="#" className="text-light-blue">
+                  Resend OTP
+                </a>
+              </p>
+            )}
           </div>
         </div>
       </div>
