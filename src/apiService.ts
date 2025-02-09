@@ -255,7 +255,22 @@ export const apiService = {
         return handleResponse(response);
       },
     },
-    
+    revenue: {
+      getTotalRevenue: async (token: string) => {
+        const response = await fetch(`${BASE_URL}/revenue/total`, {
+          method: 'GET',
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        return handleResponse(response);
+      },
+      getRevenueByDateRange: async (token: string, startDate: string, endDate: string) => {
+        const response = await fetch(`${BASE_URL}/revenue?startDate=${startDate}&endDate=${endDate}`, {
+          method: 'GET',
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        return handleResponse(response);
+      },
+    },
   },
   user: {
     signup: async (payload: { username: string; email: string; password: string }) => {
