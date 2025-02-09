@@ -95,8 +95,77 @@ export const apiService = {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       return handleResponse(response);
-    }
-  },
+    },
+    learners: {
+        createLearner: async (token: string, payload: {
+          firstname: string;
+          lastname: string;
+          email: string;
+          course: string;
+          gender: string;
+          location: string;
+          phone: string;
+          disability: string;
+          image: string;
+          description: string;
+          amount: number;
+        }) => {
+          const response = await fetch(`${BASE_URL}/learners`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(payload),
+          });
+          return handleResponse(response);
+        },
+        getAllLearners: async (token: string) => {
+          const response = await fetch(`${BASE_URL}/learners`, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` },
+          });
+          return handleResponse(response);
+        },
+        getLearnerById: async (token: string, id: string) => {
+          const response = await fetch(`${BASE_URL}/learners/${id}`, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` },
+          });
+          return handleResponse(response);
+        },
+        updateLearnerById: async (token: string, id: string, payload: {
+          firstname: string;
+          lastname: string;
+          email: string;
+          course: string;
+          gender: string;
+          location: string;
+          phone: string;
+          disability: string;
+          image: string;
+          description: string;
+          amount: number;
+        }) => {
+          const response = await fetch(`${BASE_URL}/learners/${id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(payload),
+          });
+          return handleResponse(response);
+        },
+        deleteLearnerById: async (token: string, id: string) => {
+          const response = await fetch(`${BASE_URL}/learners/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` },
+          });
+          return handleResponse(response);
+        },
+      }
+    },
   user: {
     signup: async (payload: { username: string; email: string; password: string }) => {
       const response = await fetch(`${BASE_URL}/user/auth/signup`, {
@@ -149,5 +218,4 @@ export const apiService = {
       return handleResponse(response);
     },
     } 
-    
 };
