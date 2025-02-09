@@ -210,7 +210,52 @@ export const apiService = {
         return handleResponse(response);
       },
     },
-
+    invoice: {
+      createInvoice: async (token: string, payload: { learnerId: string; amount: number; description: string; dueDate: string }) => {
+        const response = await fetch(`${BASE_URL}/invoices`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        });
+        return handleResponse(response);
+      },
+      getAllInvoices: async (token: string) => {
+        const response = await fetch(`${BASE_URL}/invoices`, {
+          method: 'GET',
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        return handleResponse(response);
+      },
+      getInvoiceById: async (token: string, id: string) => {
+        const response = await fetch(`${BASE_URL}/invoices/${id}`, {
+          method: 'GET',
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        return handleResponse(response);
+      },
+      updateInvoiceById: async (token: string, id: string, payload: { learnerId: string; amount: number; description: string; dueDate: string }) => {
+        const response = await fetch(`${BASE_URL}/invoices/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        });
+        return handleResponse(response);
+      },
+      deleteInvoiceById: async (token: string, id: string) => {
+        const response = await fetch(`${BASE_URL}/invoices/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        return handleResponse(response);
+      },
+    },
+    
   },
   user: {
     signup: async (payload: { username: string; email: string; password: string }) => {
