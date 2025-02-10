@@ -34,7 +34,7 @@ const Register: React.FC = () => {
   
         const response = await apiService.admin.signup(payload);
         console.log('Registration response:', response);
-        navigate('/otp-verification'); 
+        navigate('/otp-verification', { state: { email: email } });
       } catch (error: Error | unknown) {
         const message = error instanceof Error ? error.message : 'Registration failed';
         setErrorMessage(message); 

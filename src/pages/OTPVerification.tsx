@@ -1,46 +1,93 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { apiService } from '../apiService';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import jwt from 'jsonwebtoken';
 
-interface OTPVerificationProps {
-  email: string;
-  }
-const OTPVerification: React.FC<OTPVerificationProps> = ({ email}) => {
+
+const OTPVerification: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const email = location.state?.email; // Get email from the location state
   const [error, setError] = React.useState('');
   const [otpToken, setOtpToken] = React.useState('');
   const [isExpired, setIsExpired] = React.useState(false);
-  
- 
+
+  // Redirect if email is not available
+  React.useEffect(() => {
+    if (!email) {
+      navigate('/register'); // Or wherever you want to redirect if no email.
+    }
+  }, [email, navigate]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const maxOTPAge = 5 * 60 * 1000; // 5 minutes in milliseconds
-    const tokenTimestamp = parseInt(otpToken.split('.')[1] || '0', 10);
-    const currentTime = Date.now();
-
-    if (currentTime - tokenTimestamp > maxOTPAge) {
-      setError('OTP has expired. Please request a new one.');
-      setIsExpired(true);
-      return;
-    }
 
     try {
-      const response = await apiService.admin.verifyEmail({ email,  token: otpToken });
-      const { success } = await response.json();
+      interface DecodedToken {
+        exp?: number;
+      }
+      
+      const decodedToken = jwt.decode(otpToken) as DecodedToken;
+      
+            if (!decodedToken || !decodedToken.exp) {
+        setError('Invalid OTP token.');
+        return;
+      }
 
-      if (success) {
+      const expirationTime = decodedToken.exp * 1000; // Convert seconds to milliseconds
+      const currentTime = Date.now();
+
+      if (expirationTime <= currentTime) {
+        setError('OTP has expired. Please request a new one.');
+        setIsExpired(true);
+        return;
+      }
+
+      if (!email) {
+        setError('Email is missing. Please request a new OTP.');
+        return;
+      }
+
+      const response = await apiService.admin.verifyEmail({ email, token: otpToken });
+      const data = await response.json();
+
+      if (data.success) {
         navigate('/login');
       } else {
-        setError('Invalid OTP code');
+        setError(data.message || 'Invalid OTP code'); // Use the message from the API if available
       }
-    } catch (error) {
-      console.error('Error during OTP verification:', error);
+    } catch (err: unknown) {
+      console.error('Error during OTP verification:', err);
       setError('Failed to verify OTP. Please try again.');
     }
   };
+
+  // Function to resend the OTP
+  const handleResendOTP = async () => {
+    try {
+      // Call your API endpoint to resend the OTP
+      const response = await apiService.admin.resendVerificationEmail({email}); // Assuming you have a resend OTP API
+      const data = await response.json();
+
+      if (data.success) {
+        // Display a success message to the user
+        alert("A new OTP has been sent to your email.");
+        setIsExpired(false); // Reset the isExpired state
+      } else {
+        // Handle error cases, e.g., email not found, etc.
+        setError(data.message || "Failed to resend OTP. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error resending OTP:", error);
+      setError("Failed to resend OTP. Please try again.");
+    }
+  };
+
+  if (!email) {
+    return <div>Loading...</div>; // Or some other placeholder
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
@@ -105,7 +152,7 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({ email}) => {
 
             <div>
               <Button variant="primary" className="w-full py-2 rounded-md font-semibold text-sm hover:bg-dark-blue focus:outline-none focus:ring-2 focus:ring-light-blue bg-primary text-white">
-                Verify 
+                Verify
               </Button>
             </div>
           </form>
@@ -116,16 +163,16 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({ email}) => {
             {isExpired ? (
               <p className="text-red-500 text-sm">
                 Sorry, the OTP has expired. Please{' '}
-                <a href="#" className="text-light-blue">
+                <button onClick={handleResendOTP} className="text-light-blue">
                   Resend OTP
-                </a>
+                </button>
               </p>
             ) : (
               <p className="text-gray-text text-sm">
-                Didn't you receive the OPT?{' '}
-                <a href="#" className="text-light-blue">
+                Didn't you receive the OTP?{' '}
+                <button onClick={handleResendOTP} className="text-light-blue">
                   Resend OTP
-                </a>
+                </button>
               </p>
             )}
           </div>
