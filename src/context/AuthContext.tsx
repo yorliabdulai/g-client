@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { auth } from '../firebase';
 import { User } from 'firebase/auth'; // Import the User type
@@ -20,11 +19,7 @@ export const useAuth = () => {
   return context;
 };
 
-interface AuthProviderProps {
-  children: React.ReactNode;
-}
-
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -39,10 +34,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const signInWithGoogle = async () => {
     try {
-        const { signInWithGoogle: firebaseSignInWithGoogle } = await import('../firebase'); // Dynamic import
-        await firebaseSignInWithGoogle(); // Call the function
+      const { signInWithGoogle: firebaseSignInWithGoogle } = await import('../firebase'); // Dynamic import
+      await firebaseSignInWithGoogle(); // Call the function
     } catch (error) {
-        console.error("Error signing in with Google", error);
+      console.error("Error signing in with Google", error);
     }
   };
 
@@ -51,10 +46,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const { signOutUser: firebaseSignOutUser } = await import('../firebase');
       await firebaseSignOutUser();
     } catch (error) {
-        console.error("Error signing out", error);
+      console.error("Error signing out", error);
     }
   };
-
 
   const value: AuthContextProps = {
     user,
@@ -69,3 +63,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+interface AuthProviderProps {
+  children: React.ReactNode;
+}
+
+export default AuthProvider;
