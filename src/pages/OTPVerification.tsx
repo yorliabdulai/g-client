@@ -6,37 +6,41 @@ import Button from '../components/Button';
 
 interface OTPVerificationProps {
   email: string;
-  token: string;
-}
-const OTPVerification: React.FC<OTPVerificationProps> = ({ email, token }) => {
+  }
+const OTPVerification: React.FC<OTPVerificationProps> = ({ email}) => {
   const navigate = useNavigate();
-  const [isExpired, setIsExpired] = React.useState(false);
   const [error, setError] = React.useState('');
+  const [otpToken, setOtpToken] = React.useState('');
+  const [isExpired, setIsExpired] = React.useState(false);
+  
+ 
 
-  React.useEffect(() => {
-    const verifyEmail = async () => {
-      try {
-        const startTime = Date.now();
-        const response = await apiService.admin.verifyEmail({ email, token });
-        const { success } = await response.json();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const maxOTPAge = 5 * 60 * 1000; // 5 minutes in milliseconds
+    const tokenTimestamp = parseInt(otpToken.split('.')[1] || '0', 10);
+    const currentTime = Date.now();
 
-        const currentTime = Date.now();
-        const timeElapsed = currentTime - startTime;
-        if (success) {
-          console.log('OTP response:', response);
-          navigate('/login');
-        } else if (timeElapsed > 5 * 60 * 1000) {
-          setIsExpired(true);
-        } else {
-          setError("Email verification failed");
-        }
-      } catch (error) {
-        console.error("An error occurred during email verification", error);
-        setIsExpired(true);
+    if (currentTime - tokenTimestamp > maxOTPAge) {
+      setError('OTP has expired. Please request a new one.');
+      setIsExpired(true);
+      return;
+    }
+
+    try {
+      const response = await apiService.admin.verifyEmail({ email,  token: otpToken });
+      const { success } = await response.json();
+
+      if (success) {
+        navigate('/login');
+      } else {
+        setError('Invalid OTP code');
       }
-    };
-    verifyEmail();
-  }, [email, token, navigate]);
+    } catch (error) {
+      console.error('Error during OTP verification:', error);
+      setError('Failed to verify OTP. Please try again.');
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
@@ -89,10 +93,11 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({ email, token }) => {
           </div>
 
           {/* OTP Form */}
-          <form className="space-y-4" >
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <Input
                 type="text"
+                onChange={(e) => setOtpToken(e.target.value)}
                 placeholder="123456" // Replace with your actual OTP input logic
                 className="border border-gray-300 rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 focus:ring-light-blue text-sm bg-light-gray"
               />
