@@ -96,6 +96,14 @@ export const apiService = {
       });
       return handleResponse(response);
     },
+    resendVerificationEmail: async(email: string) => {
+     const response = await fetch(`{BASE_URL}/admin/auth/resendVerificationEmail`,{
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(email),
+     });
+     return handleResponse(response);
+    },
     learners: {
         createLearner: async (token: string, payload: {
           firstname: string;

@@ -68,7 +68,7 @@ const OTPVerification: React.FC = () => {
   const handleResendOTP = async () => {
     try {
       // Call your API endpoint to resend the OTP
-      const response = await apiService.admin.resendVerificationEmail({email}); // Assuming you have a resend OTP API
+      const response = await apiService.admin.resendVerificationEmail(email); // Assuming you have a resend OTP API
       const data = await response.json();
 
       if (data.success) {
