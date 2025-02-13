@@ -9,6 +9,7 @@ import AdminLayout from './layouts/AdminLayout';
 import Dashboard from './pages/admin/Dashboard';
 import OTPVerification from './pages/OTPVerification';
 import InvoicesPage from './pages/admin/InvoicesPage';
+import LearnersPage from './pages/admin/LearnersPage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path='/home' element={<Home />}/>
             <Route path='/admin' element={<Dashboard />}/>
             <Route path='/admin/invoices' element={<InvoicesPage />}/>
+            <Route path='/admin/learners' element={<LearnersPage />}/>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} /> {/* Add Register Route */}
             <Route path="/otp-verification" element={<OTPVerification />} />
