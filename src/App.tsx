@@ -10,6 +10,7 @@ import Dashboard from './pages/admin/Dashboard';
 import OTPVerification from './pages/OTPVerification';
 import InvoicesPage from './pages/admin/InvoicesPage';
 import LearnersPage from './pages/admin/LearnersPage';
+import CoursesPage from './pages/admin/CoursesPage';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path='/admin' element={<Dashboard />}/>
             <Route path='/admin/invoices' element={<InvoicesPage />}/>
             <Route path='/admin/learners' element={<LearnersPage />}/>
+            <Route path='/admin/courses' element={<CoursesPage />}/>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} /> {/* Add Register Route */}
             <Route path="/otp-verification" element={<OTPVerification />} />
