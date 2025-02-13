@@ -1,13 +1,9 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { 
-  LayoutDashboard, 
+import Sidebar from '@/components/Sidebar';
+import {  
   FileText, 
   Users, 
-  GraduationCap, 
-  BarChart3,
-  Settings,
-  LogOut,
   Moon,
   DollarSign,
   Clock
@@ -36,46 +32,11 @@ const learnerData = [
   { id: 5, name: 'Ralph Edwards', role: 'Software Developer', amount: 420.00, avatar: '/api/placeholder/32/32' }
 ];
 
-const navItems = [
-  { icon: LayoutDashboard, label: 'Dashboard', active: true },
-  { icon: FileText, label: 'Invoices' },
-  { icon: Users, label: 'Learners' },
-  { icon: GraduationCap, label: 'Courses' },
-  { icon: BarChart3, label: 'Report' },
-  { icon: Settings, label: 'Settings' },
-  { icon: LogOut, label: 'Logout' }
-];
 
 const Dashboard = () => {
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
-      <div className="w-64 bg-blue-700 text-white">
-        {/* Logo */}
-        <div className="p-4 border-b border-blue-600">
-          <div className="flex items-center text-xl font-bold">
-            <span>CLient</span>
-          </div>
-        </div>
-
-        {/* Navigation */}
-        <nav className="p-4">
-          <div className="space-y-2">
-            {navItems.map((item, index) => (
-              <a
-                key={index}
-                href="#"
-                className={`flex items-center space-x-3 p-2 rounded-lg ${
-                  item.active ? 'bg-blue-800' : 'hover:bg-blue-600'
-                }`}
-              >
-                <item.icon className="w-5 h-5" />
-                <span>{item.label}</span>
-              </a>
-            ))}
-          </div>
-        </nav>
-      </div>
+      <Sidebar />
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
