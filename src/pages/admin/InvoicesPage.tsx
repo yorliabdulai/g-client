@@ -1,5 +1,7 @@
 import { Search, Moon, Pencil, Trash2 } from 'lucide-react';
 import Sidebar from '../../components/Sidebar';
+import { useState } from 'react';
+import CreateInvoiceForm from '../../components/CreateInvoiceForm';
 
 const invoicesData = [
   {
@@ -59,6 +61,13 @@ const invoicesData = [
 ];
 
 const InvoicesPage = () => {
+    const [showCreateInvoice, setShowCreateInvoice] = useState(false);
+
+  // If showing create invoice form, render that instead of the invoice list
+  if (showCreateInvoice) {
+    return <CreateInvoiceForm onClose={() => setShowCreateInvoice(false)} />;
+  }
+
   return (
     <div className="flex h-screen bg-gray-100">
       <Sidebar />
@@ -94,10 +103,13 @@ const InvoicesPage = () => {
                   className="pl-10 pr-4 py-2 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2">
-                <span>Create Invoice</span>
-                <span className="text-xl">+</span>
-              </button>
+              <button 
+      onClick={() => setShowCreateInvoice(true)}
+      className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2"
+    >
+      <span>Create Invoice</span>
+      <span className="text-xl">+</span>
+    </button>
             </div>
 
             {/* Table */}
