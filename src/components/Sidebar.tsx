@@ -12,10 +12,10 @@ import {
 
 const mainNavItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/', active: true },
-  { icon: FileText, label: 'Invoices', path: '/invoices' },
-  { icon: Users, label: 'Learners', path: '/learners' },
-  { icon: GraduationCap, label: 'Courses', path: '/courses' },
-  { icon: BarChart3, label: 'Report', path: '/report' }
+  { icon: FileText, label: 'Invoices', path: '/admin/invoices' },
+  { icon: Users, label: 'Learners', path: '/admin/learners' },
+  { icon: GraduationCap, label: 'Courses', path: '/admin/courses' },
+  { icon: BarChart3, label: 'Report', path: '/admin/report' }
 ];
 
 const bottomNavItems = [
