@@ -9,7 +9,6 @@ import AdminLayout from './layouts/AdminLayout';
 import Dashboard from './pages/admin/Dashboard';
 import OTPVerification from './pages/OTPVerification';
 import InvoicesPage from './pages/admin/InvoicesPage';
-import CreateInvoiceForm from './components/CreateInvoiceForm';
 
 function App() {
   return (
