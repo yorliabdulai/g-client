@@ -15,9 +15,11 @@ function App() {
       <div className="dark:bg-gray-900 dark:text-white min-h-screen">
         <BrowserRouter>
           <Routes>
+            <Route path='/home' element={<Home />}/>
+            <Route path='/admin' element={<Dashboard />}/>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} /> {/* Add Register Route */}
-            <Route path="/otp-verification" element={<OTPVerification payload={{ email: '' }} />} />
+            <Route path="/otp-verification" element={<OTPVerification />} />
             <Route
               path="/"
               element={
@@ -27,7 +29,7 @@ function App() {
               }
             />
             {/* Admin Routes */}
-            <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
+           <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
               <Route path="dashboard" element={<Dashboard />} />
               {/* Add other admin routes here (invoices, learners, courses, etc.) */}
             </Route>

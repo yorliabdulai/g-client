@@ -1,78 +1,190 @@
-// src/pages/admin/Dashboard.tsx
-import React from 'react';
-import Card from '../../components/Card';
+import { Card, CardContent } from '@/components/ui/card';
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import { 
+  LayoutDashboard, 
+  FileText, 
+  Users, 
+  GraduationCap, 
+  BarChart3,
+  Settings,
+  LogOut,
+  Moon,
+  DollarSign,
+  Clock
+} from 'lucide-react';
 
-const Dashboard: React.FC = () => {
+const revenueData = [
+  { month: 'Jan', amount: 15000 },
+  { month: 'Feb', amount: 18000 },
+  { month: 'Mar', amount: 16000 },
+  { month: 'Apr', amount: 12000 },
+  { month: 'May', amount: 17000 },
+  { month: 'Jun', amount: 19000 },
+  { month: 'Jul', amount: 22000 },
+  { month: 'Aug', amount: 20000 },
+  { month: 'Sep', amount: 18000 },
+  { month: 'Oct', amount: 21000 },
+  { month: 'Nov', amount: 19000 },
+  { month: 'Dec', amount: 25000 }
+];
+
+const learnerData = [
+  { id: 1, name: 'Jane Cooper', role: 'Software Developer', amount: 420.00, avatar: '/api/placeholder/32/32' },
+  { id: 2, name: 'Savannah Nguyen', role: 'Data Science', amount: 420.00, avatar: '/api/placeholder/32/32' },
+  { id: 3, name: 'Jerome Bell', role: 'Data Science', amount: 420.00, avatar: '/api/placeholder/32/32' },
+  { id: 4, name: 'Theresa Webb', role: 'Cloud Engineer', amount: 420.00, avatar: '/api/placeholder/32/32' },
+  { id: 5, name: 'Ralph Edwards', role: 'Software Developer', amount: 420.00, avatar: '/api/placeholder/32/32' }
+];
+
+const navItems = [
+  { icon: LayoutDashboard, label: 'Dashboard', active: true },
+  { icon: FileText, label: 'Invoices' },
+  { icon: Users, label: 'Learners' },
+  { icon: GraduationCap, label: 'Courses' },
+  { icon: BarChart3, label: 'Report' },
+  { icon: Settings, label: 'Settings' },
+  { icon: LogOut, label: 'Logout' }
+];
+
+const Dashboard = () => {
   return (
-    <div className="p-6">
-      {/* Welcome Message */}
-      <h1 className="text-2xl font-semibold text-text-primary mb-6">
-        Welcome back, John
-      </h1>
+    <div className="flex h-screen bg-gray-100">
+      {/* Sidebar */}
+      <div className="w-64 bg-blue-700 text-white">
+        {/* Logo */}
+        <div className="p-4 border-b border-blue-600">
+          <div className="flex items-center text-xl font-bold">
+            <span>CLient</span>
+          </div>
+        </div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card className="bg-white border border-border-color rounded-lg shadow-md p-4">
-          <div className="font-semibold text-lg text-gray-text mb-2">Collected</div>
-          <div className="text-2xl font-bold text-text-primary">$20000</div>
-        </Card>
-
-        <Card className="bg-white border border-border-color rounded-lg shadow-md p-4">
-          <div className="font-semibold text-lg text-gray-text mb-2">Pending</div>
-          <div className="text-2xl font-bold text-text-primary">$10000</div>
-        </Card>
-
-        <Card className="bg-white border border-border-color rounded-lg shadow-md p-4">
-          <div className="font-semibold text-lg text-gray-text mb-2">Total Invoices</div>
-          <div className="text-2xl font-bold text-text-primary">35</div>
-        </Card>
-
-        <Card className="bg-white border border-border-color rounded-lg shadow-md p-4">
-          <div className="font-semibold text-lg text-gray-text mb-2">Total Learners</div>
-          <div className="text-2xl font-bold text-text-primary">50</div>
-        </Card>
+        {/* Navigation */}
+        <nav className="p-4">
+          <div className="space-y-2">
+            {navItems.map((item, index) => (
+              <a
+                key={index}
+                href="#"
+                className={`flex items-center space-x-3 p-2 rounded-lg ${
+                  item.active ? 'bg-blue-800' : 'hover:bg-blue-600'
+                }`}
+              >
+                <item.icon className="w-5 h-5" />
+                <span>{item.label}</span>
+              </a>
+            ))}
+          </div>
+        </nav>
       </div>
 
-      {/* Recent Revenue Chart */}
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold text-text-primary mb-4">Recent Revenue</h2>
-        <Card className="bg-white border border-border-color rounded-lg shadow-md p-4">
-          {/* Placeholder Chart */}
-          <div className="text-center py-12 text-gray-text">Chart Placeholder</div>
-        </Card>
-      </div>
+      {/* Main Content */}
+      <div className="flex-1 overflow-auto">
+        {/* Header */}
+        <header className="bg-white p-4 flex justify-between items-center border-b">
+          <div>
+            <h1 className="text-xl font-semibold">Dashboard</h1>
+            <p className="text-sm text-gray-500">Welcome back, John</p>
+          </div>
+          <div className="flex items-center space-x-4">
+            <button className="p-2 rounded-full hover:bg-gray-100">
+              <Moon className="w-5 h-5" />
+            </button>
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white">
+                JD
+              </div>
+              <span>John Doe</span>
+            </div>
+          </div>
+        </header>
 
-      {/* Latest Invoices */}
-      <div>
-        <h2 className="text-xl font-semibold text-text-primary mb-4">Latest Invoices</h2>
-        <Card className="bg-white border border-border-color rounded-lg shadow-md p-4">
-          <table className="table-auto w-full">
-            <thead>
-              <tr className="bg-light-gray">
-                <th className="border-b py-2 px-4 text-left text-sm font-semibold text-gray-text">Name</th>
-                <th className="border-b py-2 px-4 text-left text-sm font-semibold text-gray-text">Details</th>
-                <th className="border-b py-2 px-4 text-left text-sm font-semibold text-gray-text">Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="border-b py-2 px-4 text-sm text-text-primary">Jane Cooper</td>
-                <td className="border-b py-2 px-4 text-sm text-text-primary">Software Development</td>
-                <td className="border-b py-2 px-4 text-sm text-text-primary">$420.00</td>
-              </tr>
-              <tr>
-                <td className="border-b py-2 px-4 text-sm text-text-primary">Savannah Nguyen</td>
-                <td className="border-b py-2 px-4 text-sm text-text-primary">Data Science</td>
-                <td className="border-b py-2 px-4 text-sm text-text-primary">$420.00</td>
-              </tr>
-              <tr>
-                <td className="border-b py-2 px-4 text-sm text-text-primary">Jerome Bell</td>
-                <td className="border-b py-2 px-4 text-sm text-text-primary">Data Science</td>
-                <td className="border-b py-2 px-4 text-sm text-text-primary">$420.00</td>
-              </tr>
-            </tbody>
-          </table>
-        </Card>
+        {/* Dashboard Content */}
+        <main className="p-6">
+          {/* Stats Grid */}
+          <div className="grid grid-cols-4 gap-4 mb-6">
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center space-x-2">
+                  <DollarSign className="h-5 w-5 text-gray-500" />
+                  <span className="text-sm text-gray-500">Collected</span>
+                </div>
+                <p className="text-2xl font-bold mt-2">$20000</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center space-x-2">
+                  <Clock className="h-5 w-5 text-gray-500" />
+                  <span className="text-sm text-gray-500">Pending</span>
+                </div>
+                <p className="text-2xl font-bold mt-2">$10000</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center space-x-2">
+                  <FileText className="h-5 w-5 text-gray-500" />
+                  <span className="text-sm text-gray-500">Total Invoices</span>
+                </div>
+                <p className="text-2xl font-bold mt-2">35</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center space-x-2">
+                  <Users className="h-5 w-5 text-gray-500" />
+                  <span className="text-sm text-gray-500">Total Learners</span>
+                </div>
+                <p className="text-2xl font-bold mt-2">50</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Charts and Lists */}
+          <div className="grid grid-cols-2 gap-6">
+            <Card>
+              <CardContent className="p-6">
+                <h2 className="text-lg font-semibold mb-4">Recent Revenue</h2>
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={revenueData}>
+                      <XAxis dataKey="month" />
+                      <YAxis />
+                      <Bar dataKey="amount" fill="#2563eb" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <h2 className="text-lg font-semibold mb-4">Latest Invoices</h2>
+                <div className="space-y-4">
+                  {learnerData.map((learner) => (
+                    <div key={learner.id} className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <img
+                          src={learner.avatar}
+                          alt={learner.name}
+                          className="w-8 h-8 rounded-full"
+                        />
+                        <div>
+                          <p className="font-medium">{learner.name}</p>
+                          <p className="text-sm text-gray-500">{learner.role}</p>
+                        </div>
+                      </div>
+                      <p className="font-medium">${learner.amount.toFixed(2)}</p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </main>
       </div>
     </div>
   );

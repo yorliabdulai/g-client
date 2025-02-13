@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import path from "path"
 import react from '@vitejs/plugin-react';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
 
@@ -12,6 +13,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
+     "@": path.resolve(__dirname, "./src"),
       process: 'process/browser',
       stream: 'stream-browserify',
       util: 'util',
